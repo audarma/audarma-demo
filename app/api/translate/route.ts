@@ -8,11 +8,6 @@ import type { TranslationItem } from 'audarma';
 
 export const runtime = 'edge';
 
-interface Env extends Record<string, unknown> {
-  STATS_KV: KVNamespace;
-  CEREBRAS_API_KEY: string;
-}
-
 export async function POST(req: Request) {
   try {
     const { items, sourceLocale, targetLocale } = await req.json() as {
@@ -31,7 +26,7 @@ export async function POST(req: Request) {
     }
 
     // Get environment bindings
-    const { env } = getRequestContext<{ Bindings: Env }>();
+    const { env } = getRequestContext();
     const apiKey = env.CEREBRAS_API_KEY;
 
     if (!apiKey) {

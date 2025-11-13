@@ -7,13 +7,9 @@ import { getRequestContext } from '@cloudflare/next-on-pages';
 export const runtime = 'edge';
 export const revalidate = 0; // Disable caching
 
-interface Env extends Record<string, unknown> {
-  STATS_KV: KVNamespace;
-}
-
 export async function GET() {
   try {
-    const { env } = getRequestContext<{ Bindings: Env }>();
+    const { env } = getRequestContext();
     const statsJson = await env.STATS_KV.get('stats');
 
     const stats = statsJson ? JSON.parse(statsJson) : null;
