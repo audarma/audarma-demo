@@ -6,6 +6,8 @@ import { kv } from '@vercel/kv';
 import { translateWithFallback } from '@/lib/cerebras-provider';
 import type { TranslationItem } from 'audarma';
 
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const { items, sourceLocale, targetLocale } = await req.json() as {

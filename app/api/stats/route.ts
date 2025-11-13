@@ -4,6 +4,7 @@
 
 import { kv } from '@vercel/kv';
 
+export const runtime = 'edge';
 export const revalidate = 0; // Disable caching
 
 export async function GET() {

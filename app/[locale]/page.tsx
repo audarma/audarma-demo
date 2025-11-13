@@ -1,5 +1,7 @@
 "use client";
 
+export const runtime = 'edge';
+
 import { AudarProvider, ViewTranslationProvider } from "audarma";
 import { useEffect, useState } from "react";
 import { useAudarmaConfig } from "@/lib/audarma-config";
