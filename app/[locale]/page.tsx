@@ -10,6 +10,7 @@ import { GlobalStats } from "@/components/global-stats";
 import { TranslatedText } from "@/components/translated-text";
 import { IconBrandGithub, IconBrandNpm, IconTrash } from "@tabler/icons-react";
 import { useLocale } from "next-intl";
+import Image from "next/image";
 
 export default function DemoPage() {
   const [stories, setStories] = useState<HNStory[]>([]);
@@ -162,10 +163,11 @@ export default function DemoPage() {
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <img
+                  <Image
                     src="/logo.png"
                     alt="Audarma Logo"
-                    className="w-12 h-12"
+                    width={48}
+                    height={48}
                   />
                   <div>
                     <TranslatedText
