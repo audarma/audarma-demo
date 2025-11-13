@@ -1,12 +1,12 @@
 'use client';
 
 import { useViewTranslation } from 'audarma';
-import { CSSProperties } from 'react';
+import React, { CSSProperties } from 'react';
 
 interface TranslatedTextProps {
   id: string;
   text: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: keyof React.JSX.IntrinsicElements;
   className?: string;
   style?: CSSProperties;
 }
