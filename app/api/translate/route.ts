@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     }
 
     // Get environment bindings
-    const { env } = getRequestContext<Env>();
+    const { env } = getRequestContext<{ Bindings: Env }>();
     const apiKey = env.CEREBRAS_API_KEY;
 
     if (!apiKey) {

@@ -13,7 +13,7 @@ interface Env extends Record<string, unknown> {
 
 export async function GET() {
   try {
-    const { env } = getRequestContext<Env>();
+    const { env } = getRequestContext<{ Bindings: Env }>();
     const statsJson = await env.STATS_KV.get('stats');
 
     const stats = statsJson ? JSON.parse(statsJson) : null;
