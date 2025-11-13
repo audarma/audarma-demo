@@ -126,11 +126,23 @@ You may think through your translation process, but ultimately return ONLY a val
 
   cleaned = cleaned.trim();
 
-  const translations = JSON.parse(cleaned);
+  const parsed = JSON.parse(cleaned);
 
-  if (!Array.isArray(translations)) {
+  if (!Array.isArray(parsed)) {
     throw new Error('Response is not an array');
   }
+
+  // Ensure all items are strings (handle objects with translated field)
+  const translations = parsed.map((item: unknown) => {
+    if (typeof item === 'string') {
+      return item;
+    }
+    if (typeof item === 'object' && item !== null && 'translated' in item) {
+      return String((item as { translated: unknown }).translated);
+    }
+    // Fallback: stringify the object
+    return JSON.stringify(item);
+  });
 
   // Calculate cost
   const inputTokens = data.usage?.prompt_tokens || 0;

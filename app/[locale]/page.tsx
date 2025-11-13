@@ -132,7 +132,7 @@ export default function DemoPage() {
     { contentType: "ui", contentId: "story_by", text: "by" },
     { contentType: "ui", contentId: "story_comments", text: "comments" },
     { contentType: "ui", contentId: "story_read", text: "Read article" },
-    { contentType: "ui", contentId: "clear_cache", text: "Clear cache" },
+    { contentType: "ui", contentId: "clear_cache", text: "Cache" },
   ];
 
   const translationItems = [
@@ -201,13 +201,13 @@ export default function DemoPage() {
                   <LanguageSwitcher />
                   <button
                     onClick={handleClearCache}
-                    className="px-2 sm:px-3 py-2 border rounded-md bg-background text-xs sm:text-sm hover:bg-muted transition-colors flex items-center gap-1.5 sm:gap-2 h-[42px] whitespace-nowrap"
+                    className="px-2 sm:px-3 py-2 border rounded-md bg-background text-xs sm:text-sm hover:bg-muted transition-colors flex items-center gap-1.5 sm:gap-2 h-[42px] min-w-[85px] whitespace-nowrap"
                     title="Clear translation cache"
                   >
                     <IconTrash size={16} />
                     <TranslatedText
                       id="clear_cache"
-                      text="Clear cache"
+                      text="Cache"
                       as="span"
                     />
                   </button>

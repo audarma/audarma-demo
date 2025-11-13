@@ -33,7 +33,8 @@ export function LanguageSwitcher() {
     <select
       value={locale}
       onChange={(e) => handleChange(e.target.value)}
-      className="px-3 py-2 border rounded-md bg-background text-sm h-[42px]"
+      className="px-3 py-2 border rounded-md bg-background text-sm h-[42px] w-[140px] truncate"
+      title={LANGUAGE_NAMES[locale]}
     >
       {locales.map((loc) => (
         <option key={loc} value={loc}>
