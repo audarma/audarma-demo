@@ -13,7 +13,7 @@
   "dependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",
     "@tabler/icons-react": "^3.35.0",
-    "audarma": "^0.1.0-alpha.1",
+    "audarma": "^0.1.0",
     "next": "^15.5.2",
     "next-intl": "^4.5.3",
     "react": "^18.3.1",
