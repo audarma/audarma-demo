@@ -74,22 +74,34 @@ export function getStorySummary(story: HNStory): string {
 }
 
 /**
- * Format story age (e.g., "2 hours ago")
+ * Get story age data for translation
  */
-export function getStoryAge(timestamp: number): string {
+export function getStoryAge(timestamp: number): { value: number; unit: 'minute' | 'hour' | 'day'; text: string } {
   const now = Date.now() / 1000;
   const diff = now - timestamp;
 
   if (diff < 3600) {
     const mins = Math.floor(diff / 60);
-    return `${mins} minute${mins !== 1 ? 's' : ''} ago`;
+    return {
+      value: mins,
+      unit: 'minute',
+      text: `${mins} minute${mins !== 1 ? 's' : ''} ago`
+    };
   }
 
   if (diff < 86400) {
     const hours = Math.floor(diff / 3600);
-    return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
+    return {
+      value: hours,
+      unit: 'hour',
+      text: `${hours} hour${hours !== 1 ? 's' : ''} ago`
+    };
   }
 
   const days = Math.floor(diff / 86400);
-  return `${days} day${days !== 1 ? 's' : ''} ago`;
+  return {
+    value: days,
+    unit: 'day',
+    text: `${days} day${days !== 1 ? 's' : ''} ago`
+  };
 }

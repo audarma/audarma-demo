@@ -132,12 +132,14 @@ export default function DemoPage() {
     { contentType: "ui", contentId: "story_by", text: "by" },
     { contentType: "ui", contentId: "story_comments", text: "comments" },
     { contentType: "ui", contentId: "story_read", text: "Read article" },
+    { contentType: "ui", contentId: "clear_cache", text: "Clear cache" },
   ];
 
   const translationItems = [
     ...uiTexts,
     ...stories.flatMap((story) => {
       const summary = getStorySummary(story);
+      const ageData = getStoryAge(story.time);
       return [
         {
           contentType: "hn_title",
@@ -148,6 +150,11 @@ export default function DemoPage() {
           contentType: "hn_summary",
           contentId: story.id.toString(),
           text: summary,
+        },
+        {
+          contentType: "hn_time",
+          contentId: story.id.toString(),
+          text: ageData.text,
         },
       ];
     }),
@@ -163,8 +170,10 @@ export default function DemoPage() {
           {/* Header */}
           <header className="border-b sticky top-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
             <div className="container mx-auto px-4 py-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
+              {/* Desktop: single row, Mobile: 2 rows stacked */}
+              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+                {/* Logo and Title */}
+                <div className="flex items-center gap-3 justify-center lg:justify-start">
                   <Image
                     src="/logo.png"
                     alt="Audarma Logo"
@@ -182,19 +191,25 @@ export default function DemoPage() {
                       id="header_subtitle"
                       text="LLM-powered translation with live Hacker News headlines"
                       as="p"
-                      className="text-sm text-muted-foreground"
+                      className="text-sm text-muted-foreground hidden sm:block"
                     />
                   </div>
                 </div>
-                <div className="flex items-stretch gap-3">
+
+                {/* Controls */}
+                <div className="flex items-center gap-2 sm:gap-3 justify-center lg:justify-end flex-wrap">
                   <LanguageSwitcher />
                   <button
                     onClick={handleClearCache}
-                    className="px-3 py-2 border rounded-md bg-background text-sm hover:bg-muted transition-colors flex items-center gap-2 h-[42px]"
+                    className="px-2 sm:px-3 py-2 border rounded-md bg-background text-xs sm:text-sm hover:bg-muted transition-colors flex items-center gap-1.5 sm:gap-2 h-[42px] whitespace-nowrap"
                     title="Clear translation cache"
                   >
                     <IconTrash size={16} />
-                    <span>Clear cache</span>
+                    <TranslatedText
+                      id="clear_cache"
+                      text="Clear cache"
+                      as="span"
+                    />
                   </button>
                   <a
                     href="https://github.com/audarma/audarma"

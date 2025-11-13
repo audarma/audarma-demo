@@ -22,6 +22,13 @@ export function StoryCard({ story, summary }: StoryCardProps) {
     summary
   );
 
+  const ageData = getStoryAge(story.time);
+  const { text: timeText } = useViewTranslation(
+    'hn_time',
+    story.id.toString(),
+    ageData.text
+  );
+
   const { text: pointsLabel } = useViewTranslation('ui', 'story_points', 'points');
   const { text: byLabel } = useViewTranslation('ui', 'story_by', 'by');
   const { text: commentsLabel } = useViewTranslation('ui', 'story_comments', 'comments');
@@ -51,7 +58,7 @@ export function StoryCard({ story, summary }: StoryCardProps) {
       <div className="flex items-center gap-4 text-xs text-muted-foreground">
         <span>{story.score} {pointsLabel}</span>
         <span>{byLabel} {story.by}</span>
-        <span>{getStoryAge(story.time)}</span>
+        <span>{timeText}</span>
         {story.descendants && <span>{story.descendants} {commentsLabel}</span>}
       </div>
 

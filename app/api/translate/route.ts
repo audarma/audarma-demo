@@ -1,12 +1,17 @@
 /**
- * Translation API with Cerebras fallback and Vercel KV stats tracking
+ * Translation API with Cerebras fallback and Cloudflare KV stats tracking
  */
 
-import { kv } from '@vercel/kv';
+import { getRequestContext } from '@cloudflare/next-on-pages';
 import { translateWithFallback } from '@/lib/cerebras-provider';
 import type { TranslationItem } from 'audarma';
 
 export const runtime = 'edge';
+
+interface Env {
+  STATS_KV: KVNamespace;
+  CEREBRAS_API_KEY: string;
+}
 
 export async function POST(req: Request) {
   try {
@@ -25,8 +30,10 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Missing locale' }, { status: 400 });
     }
 
-    // Get Cerebras API key from environment
-    const apiKey = process.env.CEREBRAS_API_KEY;
+    // Get environment bindings
+    const { env } = getRequestContext<Env>();
+    const apiKey = env.CEREBRAS_API_KEY;
+
     if (!apiKey) {
       return Response.json({ error: 'CEREBRAS_API_KEY not configured' }, { status: 500 });
     }
@@ -34,13 +41,21 @@ export async function POST(req: Request) {
     // Translate with automatic model fallback
     const result = await translateWithFallback(items, sourceLocale, targetLocale, apiKey);
 
-    // Update global stats in Vercel KV
+    // Update global stats in Cloudflare KV
     try {
-      await Promise.all([
-        kv.hincrby('stats', 'translations', items.length),
-        kv.hincrbyfloat('stats', 'tokens', result.tokens),
-        kv.hincrbyfloat('stats', 'cost', result.cost),
-      ]);
+      // Get current stats
+      const statsJson = await env.STATS_KV.get('stats');
+      const currentStats = statsJson ? JSON.parse(statsJson) : { translations: 0, tokens: 0, cost: 0 };
+
+      // Increment stats
+      const updatedStats = {
+        translations: (currentStats.translations || 0) + items.length,
+        tokens: (currentStats.tokens || 0) + result.tokens,
+        cost: (currentStats.cost || 0) + result.cost,
+      };
+
+      // Save updated stats
+      await env.STATS_KV.put('stats', JSON.stringify(updatedStats));
       console.log(`[Stats] Updated: +${items.length} translations, +${result.tokens} tokens, +$${result.cost.toFixed(4)}`);
     } catch (error) {
       console.error('[Stats] Error updating KV:', error);

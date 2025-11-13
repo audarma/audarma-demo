@@ -1,15 +1,22 @@
 /**
- * Get global stats from Vercel KV
+ * Get global stats from Cloudflare KV
  */
 
-import { kv } from '@vercel/kv';
+import { getRequestContext } from '@cloudflare/next-on-pages';
 
 export const runtime = 'edge';
 export const revalidate = 0; // Disable caching
 
+interface Env {
+  STATS_KV: KVNamespace;
+}
+
 export async function GET() {
   try {
-    const stats = await kv.hgetall('stats');
+    const { env } = getRequestContext<Env>();
+    const statsJson = await env.STATS_KV.get('stats');
+
+    const stats = statsJson ? JSON.parse(statsJson) : null;
 
     return Response.json({
       translations: Number(stats?.translations) || 0,
