@@ -7,7 +7,7 @@ import { getRequestContext } from '@cloudflare/next-on-pages';
 export const runtime = 'edge';
 export const revalidate = 0; // Disable caching
 
-interface Env {
+interface Env extends Record<string, unknown> {
   STATS_KV: KVNamespace;
 }
 

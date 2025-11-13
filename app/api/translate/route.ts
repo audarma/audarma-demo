@@ -8,7 +8,7 @@ import type { TranslationItem } from 'audarma';
 
 export const runtime = 'edge';
 
-interface Env {
+interface Env extends Record<string, unknown> {
   STATS_KV: KVNamespace;
   CEREBRAS_API_KEY: string;
 }
